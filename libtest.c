@@ -1,7 +1,7 @@
 #include <jni.h>
 #include "sphinx.h"
 
-JNIEXPORT void JNICALL Java_org_hsbp_androsphinx_Main_challenge(JNIEnv *env, jobject ignore, jbyteArray pwd, jbyteArray bfac, jbyteArray chal) {
+JNIEXPORT void JNICALL Java_org_hsbp_androsphinx_Sphinx_challenge(JNIEnv *env, jobject ignore, jbyteArray pwd, jbyteArray bfac, jbyteArray chal) {
 	jbyte* bufferPtrPwd = (*env)->GetByteArrayElements(env, pwd, NULL);
 	jbyte* bufferPtrBfac = (*env)->GetByteArrayElements(env, bfac, NULL);
 	jbyte* bufferPtrChal = (*env)->GetByteArrayElements(env, chal, NULL);
@@ -14,7 +14,7 @@ JNIEXPORT void JNICALL Java_org_hsbp_androsphinx_Main_challenge(JNIEnv *env, job
 	(*env)->ReleaseByteArrayElements(env, chal, bufferPtrChal, 0);
 }
 
-JNIEXPORT jbyteArray JNICALL Java_org_hsbp_androsphinx_Main_respond(JNIEnv *env, jobject ignore, jbyteArray chal, jbyteArray secret) {
+JNIEXPORT jbyteArray JNICALL Java_org_hsbp_androsphinx_Sphinx_respond(JNIEnv *env, jobject ignore, jbyteArray chal, jbyteArray secret) {
 	jbyte* bufferPtrChal = (*env)->GetByteArrayElements(env, chal, NULL);
 	jbyte* bufferPtrSecret = (*env)->GetByteArrayElements(env, secret, NULL);
 
@@ -30,7 +30,7 @@ JNIEXPORT jbyteArray JNICALL Java_org_hsbp_androsphinx_Main_respond(JNIEnv *env,
 	return result ? NULL : resp;
 }
 
-JNIEXPORT jbyteArray JNICALL Java_org_hsbp_androsphinx_Main_finish(JNIEnv *env, jobject ignore, jbyteArray bfac, jbyteArray resp) {
+JNIEXPORT jbyteArray JNICALL Java_org_hsbp_androsphinx_Sphinx_finish(JNIEnv *env, jobject ignore, jbyteArray bfac, jbyteArray resp) {
 	jbyte* bufferPtrBfac = (*env)->GetByteArrayElements(env, bfac, NULL);
 	jbyte* bufferPtrResp = (*env)->GetByteArrayElements(env, resp, NULL);
 
