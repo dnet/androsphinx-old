@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="test" default="plugin">
+	<target name="plugin" depends="classes">
+		<zip destfile="test.jar">
+			<fileset dir="build">
+				<include name="org/hsbp/androsphinx/*"/>
+			</fileset>
+		</zip>
+	</target>
+	<target name="classes">
+		<mkdir dir="build"/>
+		<javac srcdir="src" destdir="build" includeantruntime="false" />
+	</target>
+	<target name="clean">
+		<delete dir="build"/>
+		<delete file="test.jar"/>
+	</target>
+</project>
