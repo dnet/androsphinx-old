@@ -43,5 +43,7 @@ public final class Sphinx {
 	private native static void challenge(byte[] pwd, byte[] bfac, byte[] chal);
 	public native static byte[] respond(byte[] chal, byte[] secret);
 	public native static byte[] finish(byte[] bfac, byte[] resp);
+
 	public native static byte[] randomBytes(int bytes);
+	public native static byte[] genericHash(byte[] data, byte[] salt, int length);
 }

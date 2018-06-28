@@ -59,3 +59,21 @@ JNIEXPORT jbyteArray JNICALL Java_org_hsbp_androsphinx_Sphinx_randomBytes(JNIEnv
 
 	return randomBytes;
 }
+
+JNIEXPORT jbyteArray JNICALL Java_org_hsbp_androsphinx_Sphinx_genericHash(JNIEnv *env, jobject ignore, jbyteArray data, jbyteArray salt, jint length) {
+	if (length < 1) return NULL;
+
+	jbyteArray hash = (*env)->NewByteArray(env, length);
+	jbyte* bufferHash = (*env)->GetByteArrayElements(env, hash, NULL);
+	jbyte* bufferData = (*env)->GetByteArrayElements(env, data, NULL);
+	jbyte* bufferSalt = (*env)->GetByteArrayElements(env, salt, NULL);
+	jsize dataLen = (*env)->GetArrayLength(env, data);
+	jsize saltLen = (*env)->GetArrayLength(env, salt);
+
+	crypto_generichash(bufferHash, length, bufferData, dataLen, bufferSalt, saltLen);
+
+	(*env)->ReleaseByteArrayElements(env, hash, bufferHash, 0);
+	(*env)->ReleaseByteArrayElements(env, data, bufferData, JNI_ABORT);
+	(*env)->ReleaseByteArrayElements(env, salt, bufferSalt, JNI_ABORT);
+	return hash;
+}
