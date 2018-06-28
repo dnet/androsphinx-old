@@ -1,5 +1,6 @@
 #include <jni.h>
 #include "sphinx.h"
+#include <sodium.h>
 
 JNIEXPORT void JNICALL Java_org_hsbp_androsphinx_Sphinx_challenge(JNIEnv *env, jobject ignore, jbyteArray pwd, jbyteArray bfac, jbyteArray chal) {
 	jbyte* bufferPtrPwd = (*env)->GetByteArrayElements(env, pwd, NULL);
@@ -44,4 +45,17 @@ JNIEXPORT jbyteArray JNICALL Java_org_hsbp_androsphinx_Sphinx_finish(JNIEnv *env
 	(*env)->ReleaseByteArrayElements(env, bfac, bufferPtrBfac, JNI_ABORT);
 
 	return result ? NULL : rwd;
+}
+
+JNIEXPORT jbyteArray JNICALL Java_org_hsbp_androsphinx_Sphinx_randomBytes(JNIEnv *env, jobject ignore, jint bytes) {
+	if (bytes < 1) return NULL;
+
+	jbyteArray randomBytes = (*env)->NewByteArray(env, bytes);
+	jbyte* bufferRandomBytes = (*env)->GetByteArrayElements(env, randomBytes, NULL);
+
+	randombytes_buf(bufferRandomBytes, bytes);
+
+	(*env)->ReleaseByteArrayElements(env, randomBytes, bufferRandomBytes, 0);
+
+	return randomBytes;
 }

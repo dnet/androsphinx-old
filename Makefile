@@ -1,4 +1,4 @@
-CFLAGS=-I/usr/lib/jvm/java-8-openjdk-amd64/include -I/usr/lib/jvm/java-8-openjdk-amd64/include/linux -shared -fPIC  -L. -l:libsphinx.so
+CFLAGS=-I/usr/lib/jvm/java-8-openjdk-amd64/include -I/usr/lib/jvm/java-8-openjdk-amd64/include/linux -shared -fPIC  -L. -l:libsphinx.so -lsodium
 
 libtest.so: libtest.c libtest
 	mv libtest libtest.so
