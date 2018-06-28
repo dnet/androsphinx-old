@@ -43,6 +43,24 @@ public final class Sphinx {
 			secretKey = new byte[crypto_sign_SECRETKEYBYTES];
 			keyPair(publicKey, secretKey);
 		}
+
+		public KeyPair(byte[] secretKey) {
+			if (secretKey.length != crypto_sign_SECRETKEYBYTES) {
+				throw new IllegalArgumentException("Invalid key length");
+			}
+			this.secretKey = secretKey;
+			publicKey = new byte[crypto_sign_PUBLICKEYBYTES];
+			secretKeyToPublicKey(publicKey, secretKey);
+		}
+
+		public KeyPair(byte[] publicKey, byte[] secretKey) throws IllegalArgumentException {
+			if (publicKey.length != crypto_sign_PUBLICKEYBYTES ||
+					secretKey.length != crypto_sign_SECRETKEYBYTES) {
+				throw new IllegalArgumentException("Invalid key length");
+			}
+			this.publicKey = publicKey;
+			this.secretKey = secretKey;
+		}
 	}
 
 	private native static void challenge(byte[] pwd, byte[] bfac, byte[] chal);
@@ -52,4 +70,5 @@ public final class Sphinx {
 	public native static byte[] randomBytes(int bytes);
 	public native static byte[] genericHash(byte[] data, byte[] salt, int length);
 	private native static void keyPair(byte[] pk, byte[] sk);
+	private native static void secretKeyToPublicKey(byte[] pk, byte[] sk);
 }
