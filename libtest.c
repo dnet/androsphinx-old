@@ -97,3 +97,22 @@ JNIEXPORT void JNICALL Java_org_hsbp_androsphinx_Sphinx_secretKeyToPublicKey(JNI
 	 (*env)->ReleaseByteArrayElements(env, pk, bufferPK, 0);
 	 (*env)->ReleaseByteArrayElements(env, sk, bufferSK, JNI_ABORT);
 }
+
+JNIEXPORT jbyteArray JNICALL Java_org_hsbp_androsphinx_Sphinx_sign(JNIEnv *env, jobject ignore, jbyteArray sk, jbyteArray msg) {
+	unsigned long long smlen;
+
+	jbyte* bufferSK = (*env)->GetByteArrayElements(env, sk, NULL);
+	jbyte* bufferMsg = (*env)->GetByteArrayElements(env, msg, NULL);
+	jsize msgLen = (*env)->GetArrayLength(env, msg);
+
+	jbyteArray signature = (*env)->NewByteArray(env, msgLen + crypto_sign_BYTES);
+	jbyte* bufferSignature = (*env)->GetByteArrayElements(env, signature, NULL);
+
+	crypto_sign(bufferSignature, &smlen, bufferMsg, msgLen, bufferSK);
+
+	(*env)->ReleaseByteArrayElements(env, signature, bufferSignature, 0);
+	(*env)->ReleaseByteArrayElements(env, sk, bufferSK, JNI_ABORT);
+	(*env)->ReleaseByteArrayElements(env, msg, bufferMsg, JNI_ABORT);
+
+	return signature;
+}

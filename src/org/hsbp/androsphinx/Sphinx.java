@@ -61,6 +61,10 @@ public final class Sphinx {
 			this.publicKey = publicKey;
 			this.secretKey = secretKey;
 		}
+
+		public byte[] sign(byte[] message) {
+			return Sphinx.sign(secretKey, message);
+		}
 	}
 
 	private native static void challenge(byte[] pwd, byte[] bfac, byte[] chal);
@@ -71,4 +75,5 @@ public final class Sphinx {
 	public native static byte[] genericHash(byte[] data, byte[] salt, int length);
 	private native static void keyPair(byte[] pk, byte[] sk);
 	private native static void secretKeyToPublicKey(byte[] pk, byte[] sk);
+	public native static byte[] sign(byte[] sk, byte[] message);
 }
