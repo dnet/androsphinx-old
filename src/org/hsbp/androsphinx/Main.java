@@ -4,11 +4,11 @@ import java.util.Arrays;
 public class Main {
 	public static void main(String[] args) {
 		System.loadLibrary("test");
-		Sphinx.ChallengeResult cr = Sphinx.challenge("shitty password\0".toCharArray());
+		Sphinx.Challenge c = new Sphinx.Challenge("shitty password\0".toCharArray());
 		byte[] secret = new byte[32];
 		Arrays.fill(secret, (byte)' ');
-		byte[] resp = Sphinx.respond(cr.challenge, secret);
-		byte[] rwd = Sphinx.finish(cr.blindingFactor, resp);
+		byte[] resp = Sphinx.respond(c.challenge, secret);
+		byte[] rwd = Sphinx.finish(c.blindingFactor, resp);
 		dump(rwd);
 	}
 

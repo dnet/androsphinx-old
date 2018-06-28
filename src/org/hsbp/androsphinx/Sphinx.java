@@ -12,11 +12,14 @@ public final class Sphinx {
 		System.loadLibrary("test");
 	}
 
-	public static ChallengeResult challenge(char[] pwd) {
-		byte[] blindingFactor = new byte[SPHINX_255_SCALAR_BYTES],
-				challenge = new byte[SPHINX_255_SER_BYTES];
-		challenge(toBytes(pwd), blindingFactor, challenge);
-		return new ChallengeResult(blindingFactor, challenge);
+	public final static class Challenge {
+		public final byte[] blindingFactor, challenge;
+
+		public Challenge(char[] pwd) {
+			blindingFactor = new byte[SPHINX_255_SCALAR_BYTES];
+			challenge = new byte[SPHINX_255_SER_BYTES];
+			challenge(toBytes(pwd), blindingFactor, challenge);
+		}
 	}
 
 	// SRC: https://stackoverflow.com/a/9670279
@@ -31,14 +34,7 @@ public final class Sphinx {
 		return bytes;
 	}
 
-	public final static class ChallengeResult {
-		public final byte[] blindingFactor, challenge;
 
-		public ChallengeResult(byte[] blindingFactor, byte[] challenge) {
-			this.blindingFactor = blindingFactor;
-			this.challenge = challenge;
-		}
-	}
 
 	private native static void challenge(byte[] pwd, byte[] bfac, byte[] chal);
 	public native static byte[] respond(byte[] chal, byte[] secret);
