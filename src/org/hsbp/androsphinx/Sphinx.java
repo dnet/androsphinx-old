@@ -10,7 +10,7 @@ public final class Sphinx {
 	public final static byte crypto_sign_PUBLICKEYBYTES = 32, crypto_sign_SECRETKEYBYTES = 64;
 
 	static {
-		System.loadLibrary("test");
+		System.loadLibrary("sphinxjni");
 	}
 
 	public final static class Challenge {
