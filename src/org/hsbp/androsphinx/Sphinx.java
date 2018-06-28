@@ -7,6 +7,7 @@ import java.util.Arrays;
 public final class Sphinx {
 
 	public final static byte SPHINX_255_SCALAR_BYTES = 32, SPHINX_255_SER_BYTES = 32;
+	public final static byte crypto_sign_PUBLICKEYBYTES = 32, crypto_sign_SECRETKEYBYTES = 64;
 
 	static {
 		System.loadLibrary("test");
@@ -34,7 +35,15 @@ public final class Sphinx {
 		return bytes;
 	}
 
+	public final static class KeyPair {
+		public final byte[] publicKey, secretKey;
 
+		public KeyPair() {
+			publicKey = new byte[crypto_sign_PUBLICKEYBYTES];
+			secretKey = new byte[crypto_sign_SECRETKEYBYTES];
+			keyPair(publicKey, secretKey);
+		}
+	}
 
 	private native static void challenge(byte[] pwd, byte[] bfac, byte[] chal);
 	public native static byte[] respond(byte[] chal, byte[] secret);
@@ -42,4 +51,5 @@ public final class Sphinx {
 
 	public native static byte[] randomBytes(int bytes);
 	public native static byte[] genericHash(byte[] data, byte[] salt, int length);
+	private native static void keyPair(byte[] pk, byte[] sk);
 }

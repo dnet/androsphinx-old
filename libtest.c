@@ -77,3 +77,13 @@ JNIEXPORT jbyteArray JNICALL Java_org_hsbp_androsphinx_Sphinx_genericHash(JNIEnv
 	(*env)->ReleaseByteArrayElements(env, salt, bufferSalt, JNI_ABORT);
 	return hash;
 }
+
+JNIEXPORT void JNICALL Java_org_hsbp_androsphinx_Sphinx_keyPair(JNIEnv *env, jobject ignore, jbyteArray pk, jbyteArray sk) {
+	jbyte* bufferPK = (*env)->GetByteArrayElements(env, pk, NULL);
+	jbyte* bufferSK = (*env)->GetByteArrayElements(env, sk, NULL);
+
+	crypto_sign_keypair(bufferPK, bufferSK);
+
+	 (*env)->ReleaseByteArrayElements(env, pk, bufferPK, 0);
+	 (*env)->ReleaseByteArrayElements(env, sk, bufferSK, 0);
+}
