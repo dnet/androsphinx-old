@@ -31,18 +31,21 @@ JNIEXPORT jbyteArray JNICALL Java_org_hsbp_androsphinx_Sphinx_respond(JNIEnv *en
 	return result ? NULL : resp;
 }
 
-JNIEXPORT jbyteArray JNICALL Java_org_hsbp_androsphinx_Sphinx_finish(JNIEnv *env, jobject ignore, jbyteArray bfac, jbyteArray resp) {
+JNIEXPORT jbyteArray JNICALL Java_org_hsbp_androsphinx_Sphinx_finish(JNIEnv *env, jobject ignore, jbyteArray pwd, jbyteArray bfac, jbyteArray resp) {
+	jbyte* bufferPtrPwd = (*env)->GetByteArrayElements(env, pwd, NULL);
 	jbyte* bufferPtrBfac = (*env)->GetByteArrayElements(env, bfac, NULL);
 	jbyte* bufferPtrResp = (*env)->GetByteArrayElements(env, resp, NULL);
+	jsize pwdLen = (*env)->GetArrayLength(env, pwd);
 
 	jbyteArray rwd = (*env)->NewByteArray(env, SPHINX_255_SER_BYTES);
 	jbyte* bufferPtrRwd = (*env)->GetByteArrayElements(env, rwd, NULL);
 	
-	int result = sphinx_finish(bufferPtrBfac, bufferPtrResp, bufferPtrRwd);
+	int result = sphinx_finish(bufferPtrPwd, pwdLen, bufferPtrBfac, bufferPtrResp, bufferPtrRwd);
 
 	(*env)->ReleaseByteArrayElements(env, rwd, bufferPtrRwd, result ? JNI_ABORT : 0);
 	(*env)->ReleaseByteArrayElements(env, resp, bufferPtrResp, JNI_ABORT);
 	(*env)->ReleaseByteArrayElements(env, bfac, bufferPtrBfac, JNI_ABORT);
+	(*env)->ReleaseByteArrayElements(env, pwd, bufferPtrPwd, JNI_ABORT);
 
 	return result ? NULL : rwd;
 }

@@ -8,7 +8,7 @@ public class Main {
 		byte[] secret = new byte[32];
 		Arrays.fill(secret, (byte)' ');
 		byte[] resp = Sphinx.respond(c.challenge, secret);
-		byte[] rwd = Sphinx.finish(c.blindingFactor, resp);
+		byte[] rwd = Sphinx.finish("shitty password\0".toCharArray(), c.blindingFactor, resp);
 		dump(rwd);
 	}
 
